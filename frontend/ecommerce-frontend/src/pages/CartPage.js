@@ -1,37 +1,29 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const CartPage = () => {
   const { cart, dispatch } = useCart();
 
-  const removeFromCart = (id) => {
-    dispatch({ type: 'REMOVE_FROM_CART', _id: id });
+  const removeFromCart = (product) => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: product });
   };
 
   return (
-    <Container>
-      <h1 className="my-4">Carrito</h1>
+    <div>
+      <h1>Carrito</h1>
       {cart.length === 0 ? (
-        <p>Tu carrito está vacío</p>
+        <p>No hay productos en el carrito.</p>
       ) : (
-        <Row>
+        <ul>
           {cart.map((product) => (
-            <Col key={product._id} sm={12} className="mb-4">
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5>{product.name}</h5>
-                  <p>${product.price}</p>
-                </div>
-                <Button variant="danger" onClick={() => removeFromCart(product._id)}>
-                  Eliminar
-                </Button>
-              </div>
-            </Col>
+            <li key={product.id}>
+              {product.name} - ${product.price}
+              <button onClick={() => removeFromCart(product)}>Eliminar</button>
+            </li>
           ))}
-        </Row>
+        </ul>
       )}
-    </Container>
+    </div>
   );
 };
 
